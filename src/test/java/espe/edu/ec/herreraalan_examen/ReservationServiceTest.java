@@ -1,19 +1,23 @@
 package espe.edu.ec.herreraalan_examen;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+
 import espe.edu.ec.herreraalan_examen.DTO.ReservationResponse;
 import espe.edu.ec.herreraalan_examen.Model.RoomReservation;
 import espe.edu.ec.herreraalan_examen.Repository.ReservationRepository;
 import espe.edu.ec.herreraalan_examen.Service.ReservationService;
 import espe.edu.ec.herreraalan_examen.Service.UserPolicyClient;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 public class ReservationServiceTest {
     private ReservationRepository reservationRepository;
@@ -40,7 +44,7 @@ public class ReservationServiceTest {
         assertEquals("Reserva creada exitosamente", response.getMessage());
         assertEquals(1L, response.getReservationId());
         verify(reservationRepository).findByRoomCode("A101");
-        verify(userPolicyClient).isUserBlocked("user@school.edu");
+        verify(userPolicyClient).isUserBlocked("AlanHerrera@espe.edu.ec");
         verify(reservationRepository).save(any(RoomReservation.class));
     }
 
