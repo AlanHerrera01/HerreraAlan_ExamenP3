@@ -50,7 +50,7 @@ public class ReservationServiceTest {
 
     @Test
     void testCreateReservationInvalidEmail() {
-        assertThrows(IllegalArgumentException.class, () ->
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 service.createReservation("A101", "pedroteamaxd", 2)
         );
         verifyNoInteractions(reservationRepository);
@@ -59,10 +59,10 @@ public class ReservationServiceTest {
 
     @Test
     void testCreateReservationInvalidHours() {
-        assertThrows(IllegalArgumentException.class, () ->
+        Exception exception1 = assertThrows(IllegalArgumentException.class, () ->
                 service.createReservation("A101", "AlanHerrera@espe.edu.ec", 0)
         );
-        assertThrows(IllegalArgumentException.class, () ->
+        Exception exception2 = assertThrows(IllegalArgumentException.class, () ->
                 service.createReservation("A101", "AlanHerrera@espe.edu.ec", 9)
         );
         verifyNoInteractions(reservationRepository);
@@ -73,7 +73,7 @@ public class ReservationServiceTest {
     void testCreateReservationRoomAlreadyReserved() {
         RoomReservation existingReservation = new RoomReservation(2L, "A101", "AlanHerrera@espe.edu.ec", 2, RoomReservation.Status.CREATED);
         when(reservationRepository.findByRoomCode("A101")).thenReturn(Optional.of(existingReservation));
-        assertThrows(IllegalStateException.class, () ->
+        Exception exception = assertThrows(IllegalStateException.class, () ->
                 service.createReservation("A101", "AlanHerrera@espe.edu.ec", 2)
         );
         verify(reservationRepository).findByRoomCode("A101");
@@ -84,7 +84,7 @@ public class ReservationServiceTest {
     void testCreateReservationUserBlockedByPolicy() {
         when(reservationRepository.findByRoomCode("A101")).thenReturn(Optional.empty());
         when(userPolicyClient.isUserBlocked("AlanHerrera@espe.edu.ec")).thenReturn(true);
-        assertThrows(IllegalStateException.class, () ->
+        Exception exception = assertThrows(IllegalStateException.class, () ->
                 service.createReservation("A101", "AlanHerrera@espe.edu.ec", 2)
         );
         verify(reservationRepository).findByRoomCode("A101");
