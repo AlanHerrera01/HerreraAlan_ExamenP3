@@ -1,10 +1,10 @@
 package espe.edu.ec.herreraalan_examen.Service;
 
+import java.util.Optional;
+
 import espe.edu.ec.herreraalan_examen.DTO.ReservationResponse;
 import espe.edu.ec.herreraalan_examen.Model.RoomReservation;
 import espe.edu.ec.herreraalan_examen.Repository.ReservationRepository;
-
-import java.util.Optional;
 
 public class ReservationService {
     private final ReservationRepository reservationRepository;
@@ -30,7 +30,8 @@ public class ReservationService {
         // Validar si el usuario está bloqueado
         if (userPolicyClient.isUserBlocked(email)) {
             throw new IllegalStateException("El usuario está bloqueado por políticas institucionales");}
-        RoomReservation reservation = new RoomReservation(1L, roomCode, email, hours, RoomReservation.Status.CREATED);
+        
+        RoomReservation reservation = new RoomReservation(null, roomCode, email, hours, RoomReservation.Status.CREATED);
         RoomReservation saved = reservationRepository.save(reservation);
         return new ReservationResponse(true, "Reserva creada exitosamente", saved.getId());
     }
